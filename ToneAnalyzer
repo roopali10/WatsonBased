@@ -1,0 +1,87 @@
+# Using IBM Watson's Tone Analyzer to intrepret a text emotion and rate as one value overall.
+# Jan 26, 2016
+# Version 1.0
+ 
+import requests
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 \
+  import Features, EntitiesOptions, KeywordsOptions
+import logging
+
+def analyze_tone(inp_text):
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+    username='xxxxxx',
+    password='xxxx',
+    version='2017-02-27')
+    print(inp_text)
+    try:
+       response = natural_language_understanding.analyze(
+        text = inp_text,
+        features=Features(
+            entities=EntitiesOptions(
+            emotion=True,
+            sentiment=True,
+            limit=2),
+        keywords=KeywordsOptions(
+            emotion=True,
+            sentiment=True,
+            limit=2)))
+      # print(json.dumps(response, indent=2))
+       return json.dumps(response, indent=2)
+        
+    except Exception as e:
+        logging.error(e, exc_info=True)
+        return False
+ 
+def welcome():
+    message = "You can analyze your text tone here"
+    print()
+     
+def display_results(data):
+    #print("Here is the json dump")
+    data = json.loads(str(data))
+    #print(data)
+    finalscore = 0
+    finaltxtcnt = 0
+    avgscore =0
+    m=0
+    for i in data['keywords']:
+       k = (i['sentiment']['label'])
+       m = (i['sentiment']['score'])
+       print(i['text'],k,"-",m)
+       if (m!=0):
+           finalscore = finalscore + m
+           finaltxtcnt = finaltxtcnt + 1
+    print('Final text Score is =', finalscore,  'for' ,finaltxtcnt, 'texts')
+    if finaltxtcnt > 1 :
+        avgscore=finalscore/finaltxtcnt 
+    else:
+        avgscore=finalscore
+        
+    if avgscore > 0.5 :
+        print ( 'positive',avgscore)
+    elif avgscore == 0:
+        print ( 'nuetral',avgscore)
+    else :
+        print ( 'negative',avgscore)
+    
+    
+def main():
+    welcome()
+     
+    data = input("Enter some text to be analyzed for tone analysis by IBM Watson (Q to quit):\n")
+    if len(data) >= 1:
+        if data == 'q'.lower():
+            exit
+        results = analyze_tone(data)
+        print("here is the outcome of analyze service")
+        print(results)
+        #print("calling the display function")
+        if results != False:
+            display_results(results)
+            exit
+        else:
+            print("Less number of characters")
+ 
+main()
