@@ -1,18 +1,22 @@
-# Using IBM Watson's Tone Analyzer to intrepret a text emotion and rate as one value overall.
-# Jan 26, 2016
+# Using IBM Watson's Tone Analyzer to detect and interpret emotional, social, and writing cues found in text.
+# Jan 20, 2016
 # Version 1.0
+# Language analyzer doesnt work for strings <10 characters. Hence before reading it with this code, ensure that
+#the input file has each row length < 10 or concatenate it with'Nuetral content text phrase'. 
  
 import requests
 import json
+#import pandas as pd
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 from watson_developer_cloud.natural_language_understanding_v1 \
   import Features, EntitiesOptions, KeywordsOptions
 import logging
+import csv
 
 def analyze_tone(inp_text):
     natural_language_understanding = NaturalLanguageUnderstandingV1(
-    username='xxxxxx',
-    password='xxxx',
+    username='xxxxx',
+    password='xxx',
     version='2017-02-27')
     print(inp_text)
     try:
@@ -35,7 +39,7 @@ def analyze_tone(inp_text):
         return False
  
 def welcome():
-    message = "You can analyze your text tone here"
+    message = "Welcome to the IBM Watson Tone Analyzer\n"
     print()
      
 def display_results(data):
@@ -45,6 +49,8 @@ def display_results(data):
     finalscore = 0
     finaltxtcnt = 0
     avgscore =0
+    avgtone = ""
+    finallist = [avgtone,avgscore]
     m=0
     for i in data['keywords']:
        k = (i['sentiment']['label'])
@@ -59,29 +65,44 @@ def display_results(data):
     else:
         avgscore=finalscore
         
-    if avgscore > 0.5 :
+    if avgscore > 0 :
         print ( 'positive',avgscore)
+        avgtone = 'positive'
     elif avgscore == 0:
         print ( 'nuetral',avgscore)
+        avgtone = 'nuetral'
     else :
         print ( 'negative',avgscore)
-    
+        avgtone = 'negative'
+    finallist = [avgtone,avgscore]
+    #print(finallist)    
+    return(finallist)
     
 def main():
     welcome()
-     
-    data = input("Enter some text to be analyzed for tone analysis by IBM Watson (Q to quit):\n")
-    if len(data) >= 1:
-        if data == 'q'.lower():
-            exit
+
+    Comment_file = open("testfileread.csv",'r')
+    tcsvread = csv.reader(Comment_file, delimiter=',')
+    Analysis_out = open("Natout.txt",'w')
+    
+    for Comment_txt in tcsvread:
+        Comment_txt[1]= Comment_txt[1].replace('\n','')
+        Comment_txt[1]=Comment_txt[1].replace('\r',"")
+        #Comment_txt[1]=Comment_txt[1].replace('\x',"")
+        data=Comment_txt [1]
+        # print(Comment_txt[1])
         results = analyze_tone(data)
-        print("here is the outcome of analyze service")
-        print(results)
-        #print("calling the display function")
+        #print("here is the outcome of analyze service")
+        #print(results)
         if results != False:
-            display_results(results)
-            exit
+          aout = display_results(results)
+          print("here is what is being written to file:",aout)
+          Analysis_out.write(Comment_txt[1] + '\t')
+          Analysis_out.write(str(aout[0]) + '\t' + str(aout[1]))
+          Analysis_out.write("\n")
         else:
-            print("Less number of characters")
+          print("Less characters")
+          Analysis_out.write("Error Record")
+          Analysis_out.write("\n")
  
 main()
