@@ -1,5 +1,3 @@
-import pandas as pd
-import logging
 import csv
 
  
@@ -16,47 +14,7 @@ def txt_feature_lib_chk(role_inp):
     role = role_inp.lower()
     role_classified = "DNA"
     role_dict = {
-        "Application Programmer" : ['Dev','Programmer','Developer','Prg'],
-        "Test Analyst" : [ 'Test Analyst','Tester','Testr'],
-        "Architect": ['Architect', 'Arch','Design Specialist','EA '],
-        "Business Analyst" : ['Business Analyst', 'Bus Analyst'],
-        "DBA": ['Database Administrator', 'DBA'],
-        "Administrator": ['Administrator','Admin'],
-        "Agile Coach" : ['Agile Coach'],
-        "Application Support": ['Application Support','Support Analyst', 'Supp','Supt','Support','L1','L2','L3','Stby'],
-        "Systems Analyst": ['Systems Analyst', 'Sys Analyst', 'System Analyst','IT Specialist','Configuration Analyst','Technical Senior','Application Engineer'],
-        "Project Manager": ['Project Manager','Proj Manager', 'Prj Mgr','Delivery Manager','Incident Manager','Mgr','Service Manager','Service Management'],
-        "SAP Package Functional Consultant" : ['SAP Package Functional Consultant','SAP Functional consultant','SAP FI','SAP MM','SAP QM','SAP SD&CRM','MM/WM','OTC','PLM','PTP','SAP Consultant','Technical_SAP','SAP MM','SAP PM','SAP EHS','SAP PP','SAP.SCM','SAP.HR'],
-        "SAP Package Technical Consultant" : ['SAP Package Technical Consultant','SAP Technical consultant','SAP ABAP Consultant','SAP BASIS Consultant','Consultant/ABAP','Consultant ABAP','SAP Cons BASIS','Basis Consultant'],
-        "SAP Security Consultant" : ["SAP Security Consultant",'Security Consultant'],
-        "Analytics Consultant": ['Cognitive Consultant','Analytics Consultant','Analytics Expert','Advanced Analytics'],
-        "Consultant" : ['Consultant', 'Cons'],
-        "Designer" : ['Designer','Design Lead'],
-        "DS&P Analyst" : ['DS&P Analyst','DS&P','DSP'],
-        "Programme Manager": [ 'Programme Manager', 'Prog Manager','Program Manager'],
-        "Project Lead": ['Project Lead','Proj Lead'],
-        "Test Lead": ['Test Lead'],
-        "Technical Team Lead" : ['Technical Team Lead','Technical Lead','Thinking Lead','Development Lead','Nearshore Lead','Team Lead','Team Leader','Lead'],
-        "Quality Analyst" : ["Quality Analyst",'QA ', 'QA','Quality Assurance Analyst','QA Engineer','Quality Assurance Engineer'],
-        "Scrum Lead" : ['Scrum Lead'],
-        "Data Analyst": ['Data Analyst','Data Mapper','SPSS','Data Engineer','Data Specialist','Data Stage','Data Quality Analyst','Data Conversion'],
-        "Data Scientist" : ['Data Scientist'],
-        "Scrum Master" : ['Scrum Master'],
-        "Director": ['Director'],
-        "Delivery Project Executive" : ['Delivery Project Executive','Delivery Executive', 'DPE'],
-        "Program Director/Program Executive": ['Account Executive','Project Executive','Dir ','Executive Sponsor','Director','Project Exec'],
-        "Client Executive": ['Client Executive'],
-        "Coordinator": ['Coordinator','Coord'],
-        "Data Warehouse Specialist" : ['Data Warehouse Specialist','Data Warehousing Specialist','Warehouse Management'],
-        "Engagement Manager" : ['Engagement Manager','Engagement Management','Engagement'],
-        "Partner" : ['Partner'],
-        "PMO" : ['PMO','PMA'],
-        "Subject Matter Expert": ['Subject Matter Expert','SME'],
-        "Technical Writer": ['Technical Writer','Tech Writer','Copywriter','Playbook Writer','Spec Writer'],
-        "Trainer" : ["Trainer"],
-        "Transition Manager" : ["Transition Manager"],
-        "Digital Channel Specialist" : ['Digital Channel Specialist']
-                                   
+        # Enter your role dictionary here                                  
         }
     if isNotEmpty(role):
         #print(len(role_dict))
